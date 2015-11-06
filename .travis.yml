@@ -25,7 +25,7 @@ before_script:
   - /tmp/OTB-5.0.0-Linux64.run
   - rm -frv /tmp/OTB-5.0.0-Linux64/lib/{*otb*,*OTB*,applications}
   - rm -frv /tmp/OTB-5.0.0-Linux64/bin
-  - cd /tmp/OTB-5.0.0-Linux64/include
+  - cd /tmp/OTB-5.0.0-Linux64
   - tar xf /tmp/OTB-headers.tar.gz
   - cd $SOURCE_DIR
   - mkdir build
