@@ -23,9 +23,6 @@ before_script:
   - wget https://www.orfeo-toolbox.org/srpms/OTB-headers.tar.gz --no-check-certificate
   - chmod +x /tmp/OTB-5.0.0-Linux64.run
   - /tmp/OTB-5.0.0-Linux64.run
-  - rm -frv /tmp/OTB-5.0.0-Linux64/lib/{*otb*,*OTB*,applications}
-  - rm -frv /tmp/OTB-5.0.0-Linux64/bin
-  - ldd /tmp/OTB-5.0.0-Linux64/lib/libgdal.so
   - cd /tmp/OTB-5.0.0-Linux64
   - tar xf /tmp/OTB-headers.tar.gz
   - cd $SOURCE_DIR
