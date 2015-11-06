@@ -23,10 +23,16 @@ before_script:
   - wget https://www.orfeo-toolbox.org/srpms/OTB-headers.tar.gz --no-check-certificate
   - chmod +x /tmp/OTB-5.0.0-Linux64.run
   - /tmp/OTB-5.0.0-Linux64.run
+  - rm -f /tmp/OTB-5.0.0-Linux64/lib/libz.so
+  - rm -f /tmp/OTB-5.0.0-Linux64/lib/libgdal.so
+  - rm -f /tmp/OTB-5.0.0-Linux64/lib/libossim.so
+  - ln -s /tmp/OTB-5.0.0-Linux64/lib/libz.so.1 /tmp/OTB-5.0.0-Linux64/lib/libz.so
+  - ln -s /tmp/OTB-5.0.0-Linux64/lib/libgdal.so.1 /tmp/OTB-5.0.0-Linux64/lib/libgdal.so
+  - ln -s /tmp/OTB-5.0.0-Linux64/lib/libossim.so.1 /tmp/OTB-5.0.0-Linux64/lib/libossim.so
   - cd /tmp/OTB-5.0.0-Linux64
   - tar xf /tmp/OTB-headers.tar.gz
-  - cd $SOURCE_DIR
+  - cd $SOURCE_DIR/../
   - mkdir build
   - cd build
 
-script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_PREFIX_PATH=/tmp/OTB-5.0.0-Linux64 -DCMAKE_INSTALL_PREFIX=../install -DOTB_USE_CURL=OFF .. && make
+script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_PREFIX_PATH=/tmp/OTB-5.0.0-Linux64 -DCMAKE_INSTALL_PREFIX=../install -DOTB_USE_CURL=OFF .. && make
