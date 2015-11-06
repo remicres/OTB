@@ -19,6 +19,7 @@ before_script:
   - tar -xzf cmake-3.4.0-rc3-Linux-x86_64.tar.gz
   - wget https://github.com/martine/ninja/releases/download/v1.6.0/ninja-linux.zip --no-check-certificate
   - unzip ninja-linux.zip
+  - wget https://www.orfeo-toolbox.org/packages/nightly/2015-11-05/OTB-5.0.0-Linux64.run  --no-check-certificate
   - wget https://www.orfeo-toolbox.org/srpms/OTB-headers.tar.gz --no-check-certificate
   - chmod +x /tmp/OTB-5.0.0-Linux64.run
   - /tmp/OTB-5.0.0-Linux64.run
