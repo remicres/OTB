@@ -25,6 +25,9 @@ before_script:
   - /tmp/OTB-5.0.0-Linux64.run
   - cd /tmp/OTB-5.0.0-Linux64
   - tar xf /tmp/OTB-headers.tar.gz
+  - sed -i 's,/home/mrashad/Dashboard/OTB/install,/tmp/OTB-5.0.0-Linux64,g' lib/cmake/ITK-4.8/Modules/ITKZLIB.cmake
+  - sed -i 's,/home/mrashad/Dashboard/OTB/install,/tmp/OTB-5.0.0-Linux64,g' lib/cmake/ITK-4.8/ITKConfig.cmake
+  - sed -i 's,/home/mrashad/Dashboard/OTB/install,/tmp/OTB-5.0.0-Linux64,g' lib/cmake/ITK-4.8/ITKTargets-release.cmake
   - cd $SOURCE_DIR/../
   - mkdir build
   - cd build
