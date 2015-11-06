@@ -31,4 +31,4 @@ before_script:
   - mkdir build
   - cd build
 
-script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_PREFIX_PATH=/tmp/OTB-5.0.0-Linux64 -DCMAKE_INSTALL_PREFIX=../install -DOTB_USE_QT4=OFF -DOTB_USE_CURL=OFF && make
+script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_PREFIX_PATH=/tmp/OTB-5.0.0-Linux64 -DCMAKE_INSTALL_PREFIX=../install . && make
