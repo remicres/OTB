@@ -30,4 +30,4 @@ before_script:
   - export XDK_DIR=/tmp/OTB-xdk-Linux64
   - export DASHBOARD_ROOT=/home/travis/build
 
-script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/ctest -VV -S /tmp/rashad-cm.cmake -DCMAKE_MAKE_PROGRAM:FILEPATH=/tmp/ninja
+script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/ctest -VV -S /tmp/rashad-cm.cmake
