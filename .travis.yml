@@ -28,4 +28,4 @@ before_script:
   - mkdir build
   - cd build
 
-script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_MAKE_PROGRAM=/tmp/ninja -DCMAKE_CXX_FLAGS="-Wno-gnu -Wno-overloaded-virtual -Wno-\\#warnings" -DCMAKE_PREFIX_PATH=/tmp/OTB-xdk-Linux64  -DOTB_BUILD_DEFAULT_MODULES=OFF -DOTBGroup_Core:BOOL=ON -DCMAKE_INSTALL_PREFIX=../install -G "Ninja" $SOURCE_DIR && /tmp/ninja && /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/ctest -VV -M Continuous -DBUILDNAME:STRING=travis-travis_yml -DSITE:STRING="travis-ci.org"
+script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_MAKE_PROGRAM=/tmp/ninja -DCMAKE_CXX_FLAGS="-Wno-gnu -Wno-overloaded-virtual -Wno-\\#warnings -Wno-shadow" -DCMAKE_PREFIX_PATH=/tmp/OTB-xdk-Linux64  -DOTB_BUILD_DEFAULT_MODULES=OFF -DOTBGroup_Core:BOOL=ON -DCMAKE_INSTALL_PREFIX=../install -G "Ninja" $SOURCE_DIR && /tmp/ninja && /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/ctest -VV -M Continuous -DBUILDNAME:STRING=travis-travis_yml -DSITE:STRING="travis-ci.org"
