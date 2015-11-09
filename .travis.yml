@@ -26,7 +26,7 @@ before_script:
   - cd $SOURCE_DIR/../
   - mkdir build
   - cd build
-  - export CMAKE_CMD=/tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake
+  - export CTEST_CMD=/tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake
   - export XDK_DIR=/tmp/OTB-xdk-Linux64
   - export DASHBOARD_ROOT=/home/travis/build
 
