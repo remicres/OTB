@@ -14,6 +14,7 @@ addons:
 
 before_script:
   - export SOURCE_DIR=$PWD
+  - export GIT_BRANCH=`git rev-parse --abbrev-ref HEAD`
   - cd /tmp
   - wget https://cmake.org/files/v3.4/cmake-3.4.0-rc3-Linux-x86_64.tar.gz --no-check-certificate
   - tar -xzf cmake-3.4.0-rc3-Linux-x86_64.tar.gz
@@ -26,6 +27,6 @@ before_script:
   - mkdir build
   - cd build
 
-script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_MAKE_PROGRAM=/tmp/ninja -DOTB_BUILD_DEFAULT_MODULES:BOOL=OFF -DOTBGroup_ThirdParty:BOOL=ON -DOTB_USE_6S:BOOL=OFF -DOTB_USE_SIFTFAST:BOOL=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wno-gnu -Wno-unused-parameter -Wno-overloaded-virtual -Wno-\\#warnings" -DCMAKE_PREFIX_PATH=/tmp/OTB-xdk-Linux64 -DCMAKE_INSTALL_PREFIX=../install -G "Ninja" $SOURCE_DIR && /tmp/ninja
+script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_MAKE_PROGRAM=/tmp/ninja -DOTB_BUILD_DEFAULT_MODULES:BOOL=OFF -DOTBGroup_ThirdParty:BOOL=ON -DOTB_USE_6S:BOOL=OFF -DOTB_USE_SIFTFAST:BOOL=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DCMAKE_CXX_FLAGS="-Wno-gnu -Wno-unused-parameter -Wno-overloaded-virtual -Wno-\\#warnings" -DCMAKE_PREFIX_PATH=/tmp/OTB-xdk-Linux64 -DCMAKE_INSTALL_PREFIX=../install -G "Ninja" $SOURCE_DIR && /tmp/ninja
 
-after_script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/ctest -DSITE:STRING="travis-ci.org" -DBUILDNAME:STRING="travis-travis_yml" -DCMAKE_MAKE_PROGRAM:FILEPATH=/tmp/ninja -DCTEST_USE_LAUNCHERS:BOOL=ON -DDART_TESTING_TIMEOUT:STRING=1500 -DCTEST_NIGHTLY_START_TIME="20:00:00 CEST" -DCTEST_DROP_METHOD="http" -DCTEST_DROP_SITE="dash.orfeo-toolbox.org" -DCTEST_DROP_LOCATION="/submit.php?project=OTB" -DCTEST_DROP_SITE_CDASH=TRUE -DCTEST_TEST_TIMEOUT=1500
+after_script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/ctest -DSITE:STRING="travis-ci.org" -DBUILDNAME:STRING="travis-$GIT_BRANCH" -DCMAKE_MAKE_PROGRAM:FILEPATH=/tmp/ninja -DCTEST_USE_LAUNCHERS:BOOL=ON -DDART_TESTING_TIMEOUT:STRING=1500 -DCTEST_NIGHTLY_START_TIME="20:00:00 CEST" -DCTEST_DROP_METHOD="http" -DCTEST_DROP_SITE="dash.orfeo-toolbox.org" -DCTEST_DROP_LOCATION="/submit.php?project=OTB" -DCTEST_DROP_SITE_CDASH=TRUE -DCTEST_TEST_TIMEOUT=1500
