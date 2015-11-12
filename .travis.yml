@@ -29,7 +29,7 @@ before_script:
   - mkdir build
   - cd build
 
-script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_MAKE_PROGRAM=/tmp/ninja -DCMAKE_PREFIX_PATH=/tmp/OTB-xdk-Linux64 -DCMAKE_INSTALL_PREFIX=../install -G "Ninja" $SOURCE_DIR && /tmp/ninja -DOTB_BUILD_DEFAULT_MODULES:BOOL=OFF -DOTBGroup_ThirdParty:BOOL=ON -DOTB_USE_6S:BOOL=OFF -DOTB_USE_SIFTFAST:BOOL=OFF
+script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_MAKE_PROGRAM=/tmp/ninja -DCMAKE_PREFIX_PATH=/tmp/OTB-xdk-Linux64 -DCMAKE_INSTALL_PREFIX=../install -G "Ninja" $SOURCE_DIR && /tmp/ninja -DOTB_BUILD_DEFAULT_MODULES:BOOL=OFF -DOTBGroup_ThirdParty:BOOL=ON -DOTB_USE_6S:BOOL=OFF -DOTB_USE_SIFTFAST:BOOL=OFF -DBUILD_TESTING=ON
 
 after_script:
 /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/ctest -VV -S /tmp/rashad-cmake.cmake
