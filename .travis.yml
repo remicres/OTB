@@ -24,6 +24,7 @@ before_script:
   - wget https://www.orfeo-toolbox.org/packages/xdk/OTB-xdk-Linux64.run  --no-check-certificate
   - chmod +x /tmp/OTB-xdk-Linux64.run
   - /tmp/OTB-xdk-Linux64.run
+  - export XDK_DIR=/tmp/OTB-xdk-Linux64
   - cd $SOURCE_DIR
   - cd $SOURCE_DIR/../
   - mkdir build
