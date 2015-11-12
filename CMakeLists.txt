@@ -1,3 +1,4 @@
+
 if(WIN32)
   cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
 else()
@@ -215,6 +216,7 @@ if(OTB_DATA_USE_LARGEINPUT)
   mark_as_advanced(OTB_DATA_LARGEINPUT_ROOT)
 endif()
 
+include(CTest)
 #Generate cmake variables with a set of largeinput data used in tests
 include(OTBManageLargeInputPaths)
 
