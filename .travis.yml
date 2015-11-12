@@ -19,6 +19,8 @@ before_script:
   - tar -xzf cmake-3.4.0-rc3-Linux-x86_64.tar.gz
   - wget https://raw.githubusercontent.com/rkanavath/otb_cmake_scripts/master/rashad-cm.cmake  --no-check-certificate
   - export CMAKE_CMD=/tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake
+  - export MAKE_CMD=/usr/bin/make
+  - export CMAKE_GEN='Unix Makefiles'
   - wget https://github.com/martine/ninja/releases/download/v1.6.0/ninja-linux.zip --no-check-certificate
   - unzip ninja-linux.zip
   - wget https://www.orfeo-toolbox.org/packages/xdk/OTB-xdk-Linux64.run  --no-check-certificate
