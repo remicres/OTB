@@ -18,7 +18,7 @@
 
 #include "otbFormosatImageMetadataInterface.h"
 
-#include <boost/algorithm/string.hpp>
+#include "otbStringUtils.h"
 #include "otbMacro.h"
 #include "otbMath.h"
 #include "itkMetaDataObject.h"

@@ -18,11 +18,10 @@
 
 #include "otbPleiadesImageMetadataInterface.h"
 
-#include <boost/algorithm/string.hpp>
+#include "otbStringUtils.h"
 #include "otbMacro.h"
 #include "itkMetaDataObject.h"
 #include "otbImageKeywordlist.h"
-#include <boost/lexical_cast.hpp>
 
 //useful constants
 #include <otbMath.h>
