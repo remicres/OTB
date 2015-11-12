@@ -17,16 +17,19 @@ before_script:
   - cd /tmp
   - wget https://cmake.org/files/v3.4/cmake-3.4.0-rc3-Linux-x86_64.tar.gz --no-check-certificate
   - tar -xzf cmake-3.4.0-rc3-Linux-x86_64.tar.gz
+  - export CMAKE_CMD=/tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake
+  - wget https://raw.githubusercontent.com/rkanavath/otb_cmake_scripts/master/rashad-cm.cmake  --no-check-certificate
   - wget https://github.com/martine/ninja/releases/download/v1.6.0/ninja-linux.zip --no-check-certificate
   - unzip ninja-linux.zip
   - wget https://www.orfeo-toolbox.org/packages/xdk/OTB-xdk-Linux64.run  --no-check-certificate
   - chmod +x /tmp/OTB-xdk-Linux64.run
   - /tmp/OTB-xdk-Linux64.run
   - cd $SOURCE_DIR
-  - export GIT_BRANCH_NAME=`/usr/bin/git rev-parse --abbrev-ref HEAD`
-  - export NO_WARNINGS='-Wno-unused-parameter -Wno-shadow -Wno-gnu -Wno-overloaded-virtual -Wno-shadow -Wno-\\#warnings -Wno-unused-local-typedefs'
   - cd $SOURCE_DIR/../
   - mkdir build
   - cd build
 
-script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_MAKE_PROGRAM=/tmp/ninja -DCMAKE_CXX_FLAGS='$NO_WARNINGS' -DCMAKE_PREFIX_PATH=/tmp/OTB-xdk-Linux64 -DCMAKE_INSTALL_PREFIX=../install -G "Ninja" $SOURCE_DIR && /tmp/ninja
+script: /tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/cmake -DCMAKE_MAKE_PROGRAM=/tmp/ninja -DCMAKE_PREFIX_PATH=/tmp/OTB-xdk-Linux64 -DCMAKE_INSTALL_PREFIX=../install -G "Ninja" $SOURCE_DIR && /tmp/ninja -DOTB_BUILD_DEFAULT_MODULES:BOOL=OFF -DOTBGroup_ThirdParty:BOOL=ON -DOTB_USE_6S:BOOL=OFF -DOTB_USE_SIFTFAST:BOOL=OFF
+
+after_script:
+/tmp/cmake-3.4.0-rc3-Linux-x86_64/bin/ctest -VV -S /tmp/rashad-cmake.cmake
