@@ -171,8 +171,6 @@ include(OTBCheckCpp11Keywords)
 # TODO BUILD_TESTING is created by default by CTest.cmake, and is ON by default.
 option(BUILD_TESTING "Build the testing tree." OFF)
 
-include(CTest)
-
 include( CppcheckTargets )
 
 # Setup build locations.
