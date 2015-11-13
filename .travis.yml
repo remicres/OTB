@@ -3,7 +3,7 @@ language: cpp
 sudo: false
 
 compiler:
-- clang
+- gcc
 
 addons:
   apt:
