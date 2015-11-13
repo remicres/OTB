@@ -13,8 +13,8 @@ addons:
     - libqtgui4
 
 before_script:
-  - export CMAKE_GEN='Ninja'
   - export MAKE_CMD=/tmp/ninja
+  - export CMAKE_GEN='Ninja'
   - cd /tmp
   - wget https://cmake.org/files/v3.4/cmake-3.4.0-rc3-Linux-x86_64.tar.gz --no-check-certificate
   - wget https://raw.githubusercontent.com/rkanavath/otb_cmake_scripts/master/rashad-cm.cmake --no-check-certificate
