@@ -1,7 +1,9 @@
 macro(otb_create_mpi_application)
    cmake_parse_arguments(APPLICATION  "" "NAME;BUILD_PATH;INSTALL_PATH" "SOURCES;INCLUDE_DIRS;LINK_LIBRARIES" ${ARGN} )
 
+   set( APPLICATION_NAME MPI${APPLICATION_NAME} )
    set( APPLICATION_TARGET_NAME otbapp_${APPLICATION_NAME} )
+   set( APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${OTBMPIImageIO_LIBRARIES} ${OTBMPIApplicationEngine_LIBRARIES} )
 
    # Build the library as a MODULE (shared lib even if OTB is built statically)
    include_directories(${APPLICATION_INCLUDE_DIRS})

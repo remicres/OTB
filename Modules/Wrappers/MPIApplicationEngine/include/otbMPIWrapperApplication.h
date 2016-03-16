@@ -34,6 +34,8 @@
 #include "itkMersenneTwisterRandomVariateGenerator.h"
 #include "mpi.h"
 
+#include "otbWrapperApplicationFactory.h"
+
 namespace otb
 {
 namespace Wrapper
@@ -96,5 +98,21 @@ private:
 
 } // end namespace Wrapper
 } //end namespace otb
+
+
+#define space_conc(str1,str2) #str1 #str2
+#define OTB_MPI_APPLICATION_EXPORT( ApplicationType )                                      \
+  typedef otb::Wrapper::ApplicationFactory<otb::Wrapper::ApplicationType> ApplicationFactoryType;    \
+  static ApplicationFactoryType::Pointer staticFactory;                                \
+  extern "C"                                                                           \
+  {                                                                                    \
+    OTB_APP_EXPORT itk::ObjectFactoryBase* itkLoad()                                   \
+    {                                                                                  \
+      staticFactory = ApplicationFactoryType::New();                                   \
+      staticFactory->SetClassName(space_conc(MPI,ApplicationType));                                   \
+      return staticFactory;                                                            \
+    }                                                                                  \
+  }
+
 
 #endif // __otbMPIWrapperApplication_h_
