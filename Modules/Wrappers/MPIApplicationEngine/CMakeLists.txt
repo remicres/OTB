@@ -1,0 +1,6 @@
+project(OTBMPIApplicationEngine)
+
+set(OTBMPIApplicationEngine_LIBRARIES OTBMPIApplicationEngine)
+otb_module_impl()
+
+include(OTBMPIApplicationMacros.cmake)
