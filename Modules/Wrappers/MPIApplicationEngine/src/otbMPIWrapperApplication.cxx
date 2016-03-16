@@ -116,9 +116,22 @@ int MPIApplication::ExecuteAndWriteOutput()
           && IsParameterEnabled(key) && HasValue(key) )
         {
         Parameter* param = GetParameterByKey(key);
-        MPIOutputImageParameter* outputParam = dynamic_cast<MPIOutputImageParameter*>(param);
+
+        // Dirty work...
+        OutputImageParameter* outputParam_old = dynamic_cast<OutputImageParameter*>(param);
+        OutputImageParameter::Pointer p = OutputImageParameter::New();
+        MPIOutputImageParameter::Pointer pp = MPIOutputImageParameter::New();
+        pp->SetFileName(outputParam_old->GetFileName());
+        pp->SetPixelType(outputParam_old->GetPixelType());
+        pp->SetDefaultPixelType(outputParam_old->GetDefaultPixelType());
+        pp->SetImage(outputParam_old->GetImage());
+        MPIOutputImageParameter * outputParam = pp.GetPointer();
+
+//        MPIOutputImageParameter::Pointer outputParam = static_cast<MPIOutputImageParameter*>(param); // TODO make it working
+
         outputParam->SetMyRank(m_MyRank);
         outputParam->SetNProcs(m_NProcs);
+
         if(outputParam!=NULL)
           {
           outputParam->InitializeWriters();
