@@ -1,8 +1,8 @@
 macro(otb_create_mpi_application)
    cmake_parse_arguments(APPLICATION  "" "NAME;BUILD_PATH;INSTALL_PATH" "SOURCES;INCLUDE_DIRS;LINK_LIBRARIES" ${ARGN} )
 
-   set( APPLICATION_NAME MPI${APPLICATION_NAME} )
-   set( APPLICATION_TARGET_NAME otbapp_${APPLICATION_NAME} )
+   set( MPIAPPLICATION_NAME MPI${APPLICATION_NAME})
+   set( APPLICATION_TARGET_NAME otbapp_${MPIAPPLICATION_NAME} )
    set( APPLICATION_LINK_LIBRARIES ${APPLICATION_LINK_LIBRARIES} ${OTBMPIImageIO_LIBRARIES} ${OTBMPIApplicationEngine_LIBRARIES} )
 
    # Build the library as a MODULE (shared lib even if OTB is built statically)
@@ -100,28 +100,3 @@ macro(otb_create_mpi_application)
 
 endmacro()
 
-macro(otb_test_application)
-  cmake_parse_arguments(TESTAPPLICATION  "" "NAME;APP" "OPTIONS;TESTENVOPTIONS;VALID" ${ARGN} )
-  if(otb-module)
-    otb_add_test(NAME ${TESTAPPLICATION_NAME}
-                  COMMAND otbTestDriver
-                  ${TESTAPPLICATION_VALID}
-                  Execute $<TARGET_FILE:otbApplicationLauncherCommandLine>
-                  ${TESTAPPLICATION_APP}
-                  $<TARGET_FILE_DIR:otbapp_${TESTAPPLICATION_APP}>
-                  ${TESTAPPLICATION_OPTIONS}
-                  -testenv ${TESTAPPLICATION_TESTENVOPTIONS})
-    # Be sure that the ${otb-module}-all target triggers the build of commandline launcher and testdriver
-    add_dependencies(${otb-module}-all otbApplicationLauncherCommandLine)
-    add_dependencies(${otb-module}-all otbTestDriver)
-  else()
-    add_test(NAME ${TESTAPPLICATION_NAME}
-            COMMAND otbTestDriver
-            ${TESTAPPLICATION_VALID}
-            Execute $<TARGET_FILE:otbApplicationLauncherCommandLine>
-            ${TESTAPPLICATION_APP}
-            $<TARGET_FILE_DIR:otbapp_${TESTAPPLICATION_APP}>
-            ${TESTAPPLICATION_OPTIONS}
-            -testenv ${TESTAPPLICATION_TESTENVOPTIONS})
-  endif()
-endmacro()

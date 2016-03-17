@@ -15,4 +15,4 @@ if exist %CURRENT_SCRIPT_DIR%otbclimpi.bat (
 )
 
 :: start the application
-%OTB_CLI_LAUNCHER% @APPLICATION_NAME@ %*
+%OTB_CLI_LAUNCHER% @MPIAPPLICATION_NAME@ %*
