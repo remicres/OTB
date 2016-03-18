@@ -42,7 +42,8 @@ SimpleParallelTiffWriter<TInputImage>
 
 	// By default, we use tiled streaming, with automatic tile size
 	// We don't set any parameter, so the memory size is retrieved from the OTB configuration options
-	this->SetAutomaticAdaptativeStreaming();
+	//this->SetAutomaticAdaptativeStreaming();
+	this->SetAutomaticStrippedStreaming();
 
 	m_FilenameHelper = FNameHelperType::New();
    }
@@ -164,6 +165,10 @@ SimpleParallelTiffWriter<TInputImage>
 	streamingManager->SetAvailableRAMInMB(availableRAM);
 	streamingManager->SetBias(bias);
 	m_StreamingManager = streamingManager;
+
+	// Optimize striped splitting layout (if stripped)
+	// TODO
+
  }
 
 #ifndef ITK_LEGACY_REMOVE
