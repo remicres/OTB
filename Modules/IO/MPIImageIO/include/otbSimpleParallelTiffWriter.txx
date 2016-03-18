@@ -56,6 +56,25 @@ SimpleParallelTiffWriter<TInputImage>
 {
 }
 
+/*
+ * Arranges the splitting layout to match the number of MPI processes
+ */
+template <class TInputImage>
+void
+SimpleParallelTiffWriter<TInputImage>
+::OptimizeStrippedSplittingLayout()
+ {
+  unsigned int n = m_StreamingManager->GetNumberOfSplits();
+  unsigned int m = static_cast<unsigned int >(m_NProcs);
+  if (n > m_NProcs)
+    {
+    float div = static_cast<float>(n) / static_cast<float>(m_NProcs);
+    m *= static_cast<unsigned int>(div);
+    }
+  SetNumberOfDivisionsStrippedStreaming(m);
+
+ }
+
 template <class TInputImage>
 void
 SimpleParallelTiffWriter<TInputImage>
@@ -66,6 +85,8 @@ SimpleParallelTiffWriter<TInputImage>
 	streamingManager->SetNumberOfDivisions(nbDivisions);
 
 	m_StreamingManager = streamingManager;
+
+	OptimizeStrippedSplittingLayout();
  }
 
 template <class TInputImage>
@@ -90,6 +111,8 @@ SimpleParallelTiffWriter<TInputImage>
 	streamingManager->SetNumberOfLinesPerStrip(nbLinesPerStrip);
 
 	m_StreamingManager = streamingManager;
+
+	OptimizeStrippedSplittingLayout();
  }
 
 template <class TInputImage>
@@ -103,6 +126,8 @@ SimpleParallelTiffWriter<TInputImage>
 	streamingManager->SetBias(bias);
 
 	m_StreamingManager = streamingManager;
+
+	OptimizeStrippedSplittingLayout();
  }
 
 template <class TInputImage>
@@ -625,14 +650,14 @@ SimpleParallelTiffWriter<TInputImage>
 	//		this->SetNumberOfDivisionsStrippedStreaming(1);
 	//	}
 	//	else if (m_NumberOfDivisions < m_NProcs)
-	if (m_NumberOfDivisions < m_NProcs)
-	{
-		itkWarningMacro(<< "Number of divisions ("<< m_NumberOfDivisions << ") < process count ("
-				<< m_NProcs << "). Setting Number of divisions to " << m_NProcs);
-		this->SetNumberOfDivisionsStrippedStreaming(m_NProcs);
-		m_StreamingManager->PrepareStreaming(inputPtr, inputRegion);
-		m_NumberOfDivisions = m_StreamingManager->GetNumberOfSplits();
-	}
+//	if (m_NumberOfDivisions < m_NProcs)
+//	{
+//		itkWarningMacro(<< "Number of divisions ("<< m_NumberOfDivisions << ") < process count ("
+//				<< m_NProcs << "). Setting Number of divisions to " << m_NProcs);
+//		this->SetNumberOfDivisionsStrippedStreaming(m_NProcs);
+//		m_StreamingManager->PrepareStreaming(inputPtr, inputRegion);
+//		m_NumberOfDivisions = m_StreamingManager->GetNumberOfSplits();
+//	}
 
 	// Configure process objects
 	this->UpdateProgress(0);
@@ -662,7 +687,7 @@ SimpleParallelTiffWriter<TInputImage>
 	}
 
 	// Loop on streaming tiles
-	double processDuration, writeDuration;
+	double processDuration, writeDuration, numberOfProcessedRegions;
 	double processStart, writeStart;
 	InputImageRegionType streamRegion;
 	for (m_CurrentDivision = 0;
@@ -695,6 +720,7 @@ SimpleParallelTiffWriter<TInputImage>
 						streamRegion.GetIndex()[1] + streamRegion.GetSize()[1] -1);
 			}
 			writeDuration += (MPI_Wtime() - writeStart);
+			numberOfProcessedRegions += 1;
 		}
 	}
 
@@ -706,8 +732,8 @@ SimpleParallelTiffWriter<TInputImage>
 	MPI_Barrier(MPI_COMM_WORLD);
 
 	// Get timings
-	const int nValues = 2;
-	double runtimes[nValues] = {processDuration, writeDuration};
+	const int nValues = 3;
+	double runtimes[nValues] = {processDuration, writeDuration, numberOfProcessedRegions};
 	std::vector<double> process_runtimes(m_NProcs*nValues);
 	MPI_Gather(runtimes,
 			nValues,
@@ -723,8 +749,11 @@ SimpleParallelTiffWriter<TInputImage>
 
 		std::cout << "Runtimes, in seconds" << std::endl;
 		std::cout <<"Process Id\tProcessing\tWriting" << std::endl;
-		for (unsigned int i = 0; i < process_runtimes.size(); i+=2) {
-			std::cout << (int (i/2)) << "\t" << process_runtimes[i] << "\t" << process_runtimes[i+1] << std::endl;
+		for (unsigned int i = 0; i < process_runtimes.size(); i+=nValues) {
+			std::cout << (int (i/nValues)) <<
+			    "\t" << process_runtimes[i] <<
+			    "\t" << process_runtimes[i+1] <<
+			    "\t("<< process_runtimes[i+2] << " regions)" << std::endl;
 		}
 
 	}

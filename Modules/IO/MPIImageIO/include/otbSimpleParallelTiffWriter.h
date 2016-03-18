@@ -263,6 +263,8 @@ private:
 		return ( div % m_NProcs);
 	}
 
+	void OptimizeStrippedSplittingLayout();
+
 	bool MyCall()
 	{
 		return (GetProcFromDivision(m_CurrentDivision) == m_MyRank);
