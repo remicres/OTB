@@ -263,7 +263,7 @@ private:
 		return ( div % m_NProcs);
 	}
 
-	void OptimizeStrippedSplittingLayout();
+	unsigned int OptimizeStrippedSplittingLayout(unsigned int n);
 
 	bool MyCall()
 	{

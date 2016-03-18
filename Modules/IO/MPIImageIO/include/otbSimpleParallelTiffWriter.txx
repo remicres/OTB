@@ -61,18 +61,18 @@ SimpleParallelTiffWriter<TInputImage>
  * Arranges the splitting layout to match the number of MPI processes
  */
 template <class TInputImage>
-void
+unsigned int
 SimpleParallelTiffWriter<TInputImage>
-::OptimizeStrippedSplittingLayout()
+::OptimizeStrippedSplittingLayout(unsigned int n)
  {
-  unsigned int n = m_StreamingManager->GetNumberOfSplits();
   unsigned int m = static_cast<unsigned int >(m_NProcs);
   if (n > m_NProcs)
     {
     float div = static_cast<float>(n) / static_cast<float>(m_NProcs);
     m *= static_cast<unsigned int>(div);
     }
-  SetNumberOfDivisionsStrippedStreaming(m);
+  std::cout << "Changing number of split from " << n << " to " << m << std::endl;
+  return m;
 
  }
 
@@ -87,7 +87,6 @@ SimpleParallelTiffWriter<TInputImage>
 
 	m_StreamingManager = streamingManager;
 
-	OptimizeStrippedSplittingLayout();
  }
 
 template <class TInputImage>
@@ -113,7 +112,6 @@ SimpleParallelTiffWriter<TInputImage>
 
 	m_StreamingManager = streamingManager;
 
-	OptimizeStrippedSplittingLayout();
  }
 
 template <class TInputImage>
@@ -128,7 +126,6 @@ SimpleParallelTiffWriter<TInputImage>
 
 	m_StreamingManager = streamingManager;
 
-	OptimizeStrippedSplittingLayout();
  }
 
 template <class TInputImage>
@@ -152,6 +149,7 @@ SimpleParallelTiffWriter<TInputImage>
 	typename RAMDrivenTiledStreamingManagerType::Pointer streamingManager = RAMDrivenTiledStreamingManagerType::New();
 	streamingManager->SetAvailableRAMInMB(availableRAM);
 	streamingManager->SetBias(bias);
+
 	m_StreamingManager = streamingManager;
  }
 
@@ -164,11 +162,8 @@ SimpleParallelTiffWriter<TInputImage>
 	typename RAMDrivenAdaptativeStreamingManagerType::Pointer streamingManager = RAMDrivenAdaptativeStreamingManagerType::New();
 	streamingManager->SetAvailableRAMInMB(availableRAM);
 	streamingManager->SetBias(bias);
+
 	m_StreamingManager = streamingManager;
-
-	// Optimize striped splitting layout (if stripped)
-	// TODO
-
  }
 
 #ifndef ITK_LEGACY_REMOVE
