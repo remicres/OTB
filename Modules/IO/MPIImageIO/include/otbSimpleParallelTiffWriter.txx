@@ -644,6 +644,14 @@ SimpleParallelTiffWriter<TInputImage>
 	// Check that streaming is relevant
 	m_StreamingManager->PrepareStreaming(inputPtr, inputRegion);
 	m_NumberOfDivisions = m_StreamingManager->GetNumberOfSplits();
+
+	// TODO make it work on tiled splits
+	// Recompute a new splitting layout which fits better the MPI number of processes
+	unsigned int newNumberOfStrippedSplits = OptimizeStrippedSplittingLayout(m_NumberOfDivisions);
+	this->SetNumberOfDivisionsStrippedStreaming(newNumberOfStrippedSplits);
+    m_StreamingManager->PrepareStreaming(inputPtr, inputRegion);
+    m_NumberOfDivisions = m_StreamingManager->GetNumberOfSplits();
+
 	//	if (inputPtr->GetBufferedRegion() == inputRegion)
 	//	{
 	//		otbMsgDevMacro(<< "Buffered region is the largest possible region, there is no need for streaming.");
