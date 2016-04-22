@@ -2,6 +2,7 @@
 #define __SimpleParallelTiffWriter_txx
 
 
+#include "itkTimeProbe.h"
 
 using std::vector;
 
@@ -695,8 +696,8 @@ SimpleParallelTiffWriter<TInputImage>
 	}
 
 	// Loop on streaming tiles
-	double processDuration, writeDuration, numberOfProcessedRegions;
-	double processStart, writeStart;
+	double processDuration(0), writeDuration(0), numberOfProcessedRegions(0);
+
 	InputImageRegionType streamRegion;
 	for (m_CurrentDivision = 0;
 			m_CurrentDivision < m_NumberOfDivisions && !this->GetAbortGenerateData();
@@ -708,16 +709,19 @@ SimpleParallelTiffWriter<TInputImage>
 			/*
 			 * Processing
 			 */
-			processStart = MPI_Wtime();
+			itk::TimeProbe processingTime;
+			processingTime.Start();
 			inputPtr->SetRequestedRegion(streamRegion);
 			inputPtr->PropagateRequestedRegion();
 			inputPtr->UpdateOutputData();
-			processDuration += (MPI_Wtime() - processStart);
+			processingTime.Stop();
+			processDuration += processingTime.GetTotal();
 
 			/*
 			 * Writing using SPTW
 			 */
-			writeStart = MPI_Wtime();
+            itk::TimeProbe writingTime;
+            writingTime.Start();
 			if (!m_VirtualMode)
 			{
 				sptw::write_area(output_raster,
@@ -727,7 +731,8 @@ SimpleParallelTiffWriter<TInputImage>
 						streamRegion.GetIndex()[0] + streamRegion.GetSize()[0] -1,
 						streamRegion.GetIndex()[1] + streamRegion.GetSize()[1] -1);
 			}
-			writeDuration += (MPI_Wtime() - writeStart);
+			writingTime.Stop();
+			writeDuration += writingTime.GetTotal();
 			numberOfProcessedRegions += 1;
 		}
 	}
@@ -753,18 +758,21 @@ SimpleParallelTiffWriter<TInputImage>
 			MPI_COMM_WORLD);
 
 
-	if (m_MyRank == 0 && m_Verbose) {
+	if (m_MyRank == 0 && m_Verbose)
+	  {
 
-		std::cout << "Runtimes, in seconds" << std::endl;
-		std::cout <<"Process Id\tProcessing\tWriting" << std::endl;
-		for (unsigned int i = 0; i < process_runtimes.size(); i+=nValues) {
-			std::cout << (int (i/nValues)) <<
-			    "\t" << process_runtimes[i] <<
-			    "\t" << process_runtimes[i+1] <<
-			    "\t("<< process_runtimes[i+2] << " regions)" << std::endl;
-		}
+	  std::cout << "Runtimes, in seconds" << std::endl;
+	  std::cout <<"Process Id\tProcessing\tWriting" << std::endl;
+	  for (unsigned int i = 0; i < process_runtimes.size(); i+=nValues)
+	    {
+	    std::cout << (int (i/nValues)) <<
+	        "\t" << process_runtimes[i] <<
+	        "\t" << process_runtimes[i+1] <<
+	        "\t("<< process_runtimes[i+2] << " regions)" << std::endl;
+	    }
+	  }
 
-	}
+
 
 	/**
 	 * If we ended due to aborting, push the progress up to 1.0 (since
