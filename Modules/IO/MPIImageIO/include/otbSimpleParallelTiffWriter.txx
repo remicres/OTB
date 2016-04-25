@@ -642,6 +642,10 @@ SimpleParallelTiffWriter<TInputImage>
 	 *  	Raster update with SPTW
 	 ************************************************************************/
 
+	// Time probe for overall process time
+	itk::TimeProbe overallTime;
+	overallTime.Start();
+
 	// Check that streaming is relevant
 	m_StreamingManager->PrepareStreaming(inputPtr, inputRegion);
 	m_NumberOfDivisions = m_StreamingManager->GetNumberOfSplits();
@@ -743,6 +747,7 @@ SimpleParallelTiffWriter<TInputImage>
 
 	// We wait for other process
 	MPI_Barrier(MPI_COMM_WORLD);
+	overallTime.Stop();
 
 	// Get timings
 	const int nValues = 3;
@@ -770,6 +775,8 @@ SimpleParallelTiffWriter<TInputImage>
 	        "\t" << process_runtimes[i+1] <<
 	        "\t("<< process_runtimes[i+2] << " regions)" << std::endl;
 	    }
+
+	  std::cout << "Overall time:" << overallTime.GetTotal() << std::endl;
 	  }
 
 
