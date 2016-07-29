@@ -1,0 +1,57 @@
+#!/bin/bash
+###########################################################################
+#
+# This script converts an otbAmazingApplication.cxx
+# to an otbMPIAmazingApplication.cxx
+#
+# [!] Works only for apps implementing some streamable process [!]
+###########################################################################
+# $1 : input cxx file of the otb app (e.g. otbAmazingApp.cxx)
+# $2 : output cxx file for the mpi-ized app (e.g otbMPIAmazingApp.cxx
+###########################################################################
+
+# Check correct number of input arguments
+if [ "$#" -ne 2 ]; then
+	echo "USAGE: app2mpiapp <input otbApp.cxx> <output otbMPIApp.cxx>"
+  exit
+fi
+
+# Check input file exists
+if [ ! -f $1 ]; then
+  echo "ERROR: $1 not found!"
+  exit
+fi
+
+# Transform file
+cp $1 $2
+sed -i -e "s/public Application/public MPIApplication/g" $2 
+sed -i -e "s/typedef Application/typedef MPIApplication/g" $2 
+sed -i -e "s/otb::Application/otb::MPIApplication/g" $2 
+sed -i -e "s/otb::Wrapper::Application/otb::Wrapper::MPIApplication/g" $2
+if [[ $(grep otbWrapperApplication.h $2) ]];then
+   sed -i -e "s/otbWrapperApplication.h/otbMPIWrapperApplication.h/g" $2
+else
+   sed -i '1s/^/#include \"otbMPIWrapperApplication.h\" /' $2
+fi
+sed -i -e "s/OTB_APPLICATION_EXPORT/OTB_MPI_APPLICATION_EXPORT/g" $2
+sed -i -e "s/otb::Wrapper:://g" $2
+
+echo "$2 Successfuly created"
+
+# Check if there is some Cmake files
+app_cmakelists=$(dirname "$1")/CMakeLists.txt
+if [ -f $app_cmakelists ]; then
+  echo "You might add the following lines in the app/CMakeFiles.txt: "
+  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+  cat $app_cmakelists
+  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+fi
+
+module_cmakelists=$(dirname "$1")/../otb-module.cmake
+if [ -f $module_cmakelists ]; then
+  echo "You might add the following lines in the otb-module.cmake: "
+  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+  cat $module_cmakelists
+  printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -
+fi
+

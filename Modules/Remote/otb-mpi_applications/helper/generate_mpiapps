@@ -1,0 +1,26 @@
+#!/bin/bash
+cd $(dirname $0)
+chmod +x app2mpiapp
+./app2mpiapp ../../../Applications/AppTextures/app/otbSFSTextureExtraction.cxx ../app/otbSFSTextureExtraction.cxx
+./app2mpiapp ../../../Applications/AppTextures/app/otbHaralickTextureExtraction.cxx ../app/otbHaralickTextureExtraction.cxx
+./app2mpiapp ../../../Applications/AppChangeDetection/app/otbMultivariateAlterationDetector.cxx ../app/otbMultivariateAlterationDetector.cxx
+./app2mpiapp ../../../Applications/AppProjection/app/otbGridBasedImageResampling.cxx ../app/otbGridBasedImageResampling.cxx
+./app2mpiapp ../../../Applications/AppProjection/app/otbOrthoRectification.cxx ../app/otbOrthoRectification.cxx
+./app2mpiapp ../../../Applications/AppProjection/app/otbRigidTransformResample.cxx ../app/otbRigidTransformResample.cxx
+./app2mpiapp ../../../Applications/AppProjection/app/otbSuperimpose.cxx ../app/otbSuperimpose.cxx
+./app2mpiapp ../../../Applications/AppFusion/app/otbBundleToPerfectSensor.cxx ../app/otbBundleToPerfectSensor.cxx
+./app2mpiapp ../../../Applications/AppFusion/app/otbPansharpening.cxx ../app/otbPansharpening.cxx
+./app2mpiapp ../../../Applications/AppClassification/app/otbClassificationMapRegularization.cxx ../app/otbClassificationMapRegularization.cxx
+./app2mpiapp ../../../Applications/AppClassification/app/otbImageClassifier.cxx ../app/otbImageClassifier.cxx
+./app2mpiapp ../../../Applications/AppClassification/app/otbPredictRegression.cxx ../app/otbPredictRegression.cxx
+./app2mpiapp ../../../Applications/AppEdge/app/otbEdgeExtraction.cxx ../app/otbEdgeExtraction.cxx
+./app2mpiapp ../../../Applications/AppFiltering/app/otbDespeckle.cxx ../app/otbDespeckle.cxx
+./app2mpiapp ../../../Applications/AppFiltering/app/otbSmoothing.cxx ../app/otbSmoothing.cxx
+./app2mpiapp ../../../Applications/AppMathParser/app/otbBandMath.cxx ../app/otbBandMath.cxx
+./app2mpiapp ../../../Applications/AppMathParserX/app/otbBandMathX.cxx ../app/otbBandMathX.cxx
+./app2mpiapp ../../../Applications/AppMoments/app/otbLocalStatisticExtraction.cxx ../app/otbLocalStatisticExtraction.cxx
+./app2mpiapp ../../../Applications/AppMorphology/app/otbBinaryMorphologicalOperation.cxx ../app/otbBinaryMorphologicalOperation.cxx
+./app2mpiapp ../../../Applications/AppMorphology/app/otbGrayScaleMorphologicalOperation.cxx ../app/otbGrayScaleMorphologicalOperation.cxx
+./app2mpiapp ../../../Applications/AppSegmentation/app/otbMeanShiftSmoothing.cxx ../app/otbMeanShiftSmoothing.cxx
+./app2mpiapp ../../../Applications/AppImageUtils/app/otbConvert.cxx ../app/otbConvert.cxx
+./app2mpiapp ../../../Applications/AppIndices/app/otbRadiometricIndices.cxx ../app/otbRadiometricIndices.cxx
